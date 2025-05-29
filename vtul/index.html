@@ -57,20 +57,42 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const titre = document.getElementById("engin").textContent;
-            var ligne_n = 50
+            let ligne_n = 50;
+            const marge_haut = 20;
+            const marge_gauche = 10;
+            const hauteur_ligne = 10;
+            const hauteur_page = doc.internal.pageSize.getHeight();
+            const marge_bas = 20;
+
             doc.setFontSize(22);
-            doc.text("Compte rendue matérielle " + titre, 10, 20);
-            doc.text("Liste du matérielle présent :", 10, 40);
-            for (let i = 0; i < checked.length; i++) {
-                doc.text("    - " + checked[i], 10, ligne_n);
-                ligne_n += 10;
+            doc.text("Compte rendue matérielle " + titre, marge_gauche, marge_haut);
+            doc.setFontSize(16);
+            ligne_n = marge_haut + 20;
+            doc.text("Liste du matérielle présent :", marge_gauche, ligne_n);
+            ligne_n += hauteur_ligne;
+
+            // Fonction pour gérer le saut de page
+            function checkPageSpace() {
+                if (ligne_n + hauteur_ligne > hauteur_page - marge_bas) {
+                    doc.addPage();
+                    ligne_n = marge_haut;
+                }
             }
-            ligne_n += 10;
-            doc.text("Liste du matériel absent ou incomplet :", 10, ligne_n);
-            ligne_n += 10;
+
+            for (let i = 0; i < checked.length; i++) {
+                checkPageSpace();
+                doc.text("    - " + checked[i], marge_gauche, ligne_n);
+                ligne_n += hauteur_ligne;
+            }
+            ligne_n += hauteur_ligne;
+            checkPageSpace();
+            doc.text("Liste du matériel absent ou incomplet :", marge_gauche, ligne_n);
+            ligne_n += hauteur_ligne;
+
             for (let i = 0; i < unchecked.length; i++) {
-                doc.text("    - " + unchecked[i], 10, ligne_n);
-                ligne_n += 10;
+                checkPageSpace();
+                doc.text("    - " + unchecked[i], marge_gauche, ligne_n);
+                ligne_n += hauteur_ligne;
             }
 
             const today = new Date();
@@ -78,7 +100,8 @@
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const year = today.getFullYear();
             const dateStr = `${day}/${month}/${year}`;
-            doc.text("fait le " + dateStr, 10, ligne_n + 10);
+            checkPageSpace();
+            doc.text("fait le " + dateStr, marge_gauche, ligne_n + hauteur_ligne);
             doc.save('compte rendus du ' + titre + " fait le " + dateStr + " .pdf");
         });
 
