@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="../script.js"></script>
     <title>FPTL</title>
 </head>
 
@@ -81,77 +83,6 @@
     <label><input type="checkbox" value="obj_39"><span>1 crochet</span></label><br>
     <button id="bobBtn">Créer le compte rendu</button> <br>
     <button id="gotoIndixBtn">Aller à la page d'accueil</button>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script>
-        document.getElementById('bobBtn').addEventListener('click', function () {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            const checked = [];
-            const unchecked = [];
-            checkboxes.forEach(cb => {
-                const label = cb.parentElement;
-                const text = label.querySelector('span').textContent;
-                if (cb.checked) {
-                    checked.push(text);
-                } else {
-                    unchecked.push(text);
-                }
-            });
-
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const titre = document.getElementById("engin").textContent;
-            let ligne_n = 50;
-            const marge_haut = 20;
-            const marge_gauche = 10;
-            const hauteur_ligne = 10;
-            const hauteur_page = doc.internal.pageSize.getHeight();
-            const marge_bas = 20;
-
-            doc.setFontSize(22);
-            doc.text("Compte rendue matérielle " + titre, marge_gauche, marge_haut);
-            doc.setFontSize(16);
-            ligne_n = marge_haut + 20;
-            doc.text("Liste du matérielle présent :", marge_gauche, ligne_n);
-            ligne_n += hauteur_ligne;
-
-            // Fonction pour gérer le saut de page
-            function checkPageSpace() {
-                if (ligne_n + hauteur_ligne > hauteur_page - marge_bas) {
-                    doc.addPage();
-                    ligne_n = marge_haut;
-                }
-            }
-
-            for (let i = 0; i < checked.length; i++) {
-                checkPageSpace();
-                doc.text("    - " + checked[i], marge_gauche, ligne_n);
-                ligne_n += hauteur_ligne;
-            }
-            ligne_n += hauteur_ligne;
-            checkPageSpace();
-            doc.text("Liste du matériel absent ou incomplet :", marge_gauche, ligne_n);
-            ligne_n += hauteur_ligne;
-
-            for (let i = 0; i < unchecked.length; i++) {
-                checkPageSpace();
-                doc.text("    - " + unchecked[i], marge_gauche, ligne_n);
-                ligne_n += hauteur_ligne;
-            }
-
-            const today = new Date();
-            const day = String(today.getDate()).padStart(2, '0');
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const year = today.getFullYear();
-            const dateStr = `${day}/${month}/${year}`;
-            checkPageSpace();
-            doc.text("fait le " + dateStr, marge_gauche, ligne_n + hauteur_ligne);
-            doc.save('compte rendus du ' + titre + " fait le " + dateStr + " .pdf");
-        });
-
-        document.getElementById('gotoIndixBtn').addEventListener('click', function () {
-            window.location.href = "../index.html";
-        });
-    </script>
 </body>
 
 </html>
