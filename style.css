@@ -40,6 +40,19 @@ input[type="checkbox"] {
     margin-right: 8px;
 }
 
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1.1em;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
 label {
     font-size: 1.05em;
     margin-right: 16px;
