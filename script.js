@@ -71,6 +71,19 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.text("Nom de la personne qui rédige le compte rendu : " + nom, marge_gauche, ligne_n);
             ligne_n += hauteur_ligne;
             doc.text("Matricule : " + matricule, marge_gauche, ligne_n);
+            
+            // Date
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Keep month for filename
+            const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+            const monthName = monthNames[today.getMonth()];
+            const year = today.getFullYear();
+
+            ligne_n += hauteur_ligne; 
+            doc.setFontSize(12);
+            doc.text(`Fait le ${day} ${monthName} ${year}`, marge_gauche, ligne_n);
+
             ligne_n += hauteur_ligne * 2; // Ajouter un espace avant la liste
 
             // Liste présent
@@ -114,18 +127,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     ligne_n += hauteur_ligne;
                 }
             }
-
-            // Date et Signature
-            const today = new Date();
-            const day = String(today.getDate()).padStart(2, '0');
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const year = today.getFullYear();
-            const dateStr = `${day}/${month}/${year}`;
-            
-            checkPageSpace();
-            ligne_n += hauteur_ligne;
-            doc.setFontSize(12);
-            doc.text("Fait le " + dateStr, marge_gauche, ligne_n);
 
             // 6. Sauvegarde du fichier
             // Nom de fichier nettoyé (sans espaces bizarres)
