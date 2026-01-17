@@ -60,9 +60,21 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.setFontSize(22);
             doc.text("Compte rendu matériel " + titre, marge_gauche, marge_haut);
             
+            // Récupération et ajout du nom et matricule
+            const nomInput = document.getElementById("nom");
+            const matriculeInput = document.getElementById("matricule");
+            const nom = nomInput ? nomInput.value : "Non renseigné";
+            const matricule = matriculeInput ? matriculeInput.value : "Non renseigné";
+
+            ligne_n = marge_haut + 30; // Ajuster la position après le titre
+            doc.setFontSize(12);
+            doc.text("Nom de la personne qui rédige le compte rendu : " + nom, marge_gauche, ligne_n);
+            ligne_n += hauteur_ligne;
+            doc.text("Matricule : " + matricule, marge_gauche, ligne_n);
+            ligne_n += hauteur_ligne * 2; // Ajouter un espace avant la liste
+
             // Liste présent
             doc.setFontSize(16);
-            ligne_n = marge_haut + 20;
             doc.setTextColor(0, 100, 0); // Vert foncé pour le positif (optionnel)
             doc.text("Liste du matériel présent :", marge_gauche, ligne_n);
             doc.setTextColor(0, 0, 0); // Retour au noir
